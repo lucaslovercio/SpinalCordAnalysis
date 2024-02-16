@@ -1,6 +1,6 @@
 function [xInicDiameter,xFinDiameter] = functionPickSegment(z_projection_optical, interface_anterior, interface_posterior)
 
-figure();
+h1 = figure();
 imshow(functionLinearNorm(z_projection_optical));
 hold on; plot(interface_anterior(:,1),interface_anterior(:,2),'g');
 plot(interface_posterior(:,1),interface_posterior(:,2),'r');  hold off;
@@ -42,7 +42,7 @@ while rehacer
     
 end
 
-
+delete(h1);
 
 end
 
