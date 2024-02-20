@@ -1,4 +1,4 @@
-function paredMaskArtery = functionGetSegment(z_projection_optical, interface_above, interface_below, xValids)
+function [paredMaskArtery, withLineBreak] = functionGetSegment(z_projection_optical, interface_above, interface_below, xValids)
 
 [hRegion,wRegion] = size(z_projection_optical);
 
@@ -32,9 +32,9 @@ strStatistics = {strcat('Distance px Mean: ',num2str(meanPx)),...
     strcat('-------------------------------------------'),...
     };
 
-conSaltoDeLinea = strjoin(strStatistics,'\n');
+withLineBreak = strjoin(strStatistics,'\n');
 
-disp(conSaltoDeLinea);
+%disp(withLineBreak);
 
 end
 
