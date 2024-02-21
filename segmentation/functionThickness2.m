@@ -14,7 +14,7 @@ imtsPx = iLI;
 n = 11; %distancia para sacar linea recta
 medicionesIMT = zeros(1,length(xLI)-2*ptsADescartar);
 stepNormal = 0.1;
-stepHigherPendiente = 0.001;
+
 for i=ptsADescartar:nLI-ptsADescartar
     posActual = [xLI(i),yLI(i)];
     p1 = [xLI(i-n),yLI(i-n)];
@@ -23,11 +23,8 @@ for i=ptsADescartar:nLI-ptsADescartar
     pendiente = (p2(2)-p1(2))/(p2(1)-p1(1));
     pendientePerpendicular = -1/pendiente;
     ordenada = posActual(2)-pendientePerpendicular*posActual(1);
-    if pendientePerpendicular>50 || pendientePerpendicular<-50
-        step = stepHigherPendiente;
-    else
-        step = stepNormal;
-    end
+    
+    step = stepNormal;
     
     %figure, imshow(paredMask);
     %hold on; plot(xLI,yLI,'r'); hold off;
@@ -43,7 +40,8 @@ for i=ptsADescartar:nLI-ptsADescartar
             posActual(1)=posActual(1)+step;
         end
         posActual(2) = pendientePerpendicular*posActual(1)+ordenada;
-        if posActual(2)>0 && posActual(1)>0 && posActual(2)<=h && posActual(1)<=w
+        if posActual(2)>0 && posActual(1)>0 && posActual(2)<=h && posActual(1)<=w &&...
+                xLI(1) <= posActual(1) && xLI(end) >= posActual(2)  %Between yellow range
             enPared = paredMask(ceil(posActual(2)),ceil(posActual(1)));
         else
             existError = true;
@@ -57,7 +55,7 @@ for i=ptsADescartar:nLI-ptsADescartar
     end
     medicionesIMT(i-ptsADescartar+1)=distance;
     
-    end
+end
 
 medicionesIMT = medicionesIMT(medicionesIMT>0);
 

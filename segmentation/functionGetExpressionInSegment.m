@@ -2,6 +2,20 @@ function [imtPxMedia, imtPxMedian, imtPxStd, imtPxMin, imtPxMax, mediciones, imt
     imtMedian, imtStd, imtMin, imtMax, medicionesIMTmm, list_profiles] =...
     functionGetExpressionInSegment( xLI,yLI,xMA,yMA,xValid,paredMask, mmpx, slice_expression )
 
+
+%Need to invert, as the original script is from LI to MA. Need to do MA to
+%LI
+
+[hRegion, wRegion] = size(paredMask);
+paredMask = flipud(paredMask);
+slice_expression = flipud(slice_expression);
+yMA = (yMA - ones(size(yMA)) * hRegion) .* (-1) + ones(size(yMA));
+yLI = (yLI - ones(size(yLI)) * hRegion) .* (-1) + ones(size(yLI));
+
+yAux = yMA;
+yMA = yLI;
+yLI = yAux;
+
 list_profiles = {};
 
 validsX = round(xValid(1)):1:round(xValid(2));
@@ -13,7 +27,7 @@ yMA = yMA(validsX);
 
 [h,w]=size(paredMask);
 
-ptsADescartar = 15;
+ptsADescartar = 30;
 
 nLI = length(xLI);
 iLI = zeros(1,length(xLI)-2*ptsADescartar);
@@ -22,8 +36,8 @@ imtsPx = iLI;
 
 n = 11; %distancia para sacar linea recta
 medicionesIMT = zeros(1,length(xLI)-2*ptsADescartar);
-stepNormal = 0.1;
-stepHigherPendiente = 0.001;
+stepNormal = 10;
+
 for i=ptsADescartar:nLI-ptsADescartar
     
     profile_expression = [];
@@ -35,16 +49,14 @@ for i=ptsADescartar:nLI-ptsADescartar
     pendiente = (p2(2)-p1(2))/(p2(1)-p1(1));
     pendientePerpendicular = -1/pendiente;
     ordenada = posActual(2)-pendientePerpendicular*posActual(1);
-    if pendientePerpendicular>50 || pendientePerpendicular<-50
-        step = stepHigherPendiente;
-    else
-        step = stepNormal;
-    end
+
+    step = stepNormal;
     
     %figure, imshow(paredMask);
     %hold on; plot(xLI,yLI,'r'); hold off;
     %Busqueda en la mascara
-    enPared = paredMask(ceil(posActual(2)),ceil(posActual(1)));
+    %enPared = paredMask(ceil(posActual(2)),ceil(posActual(1)));
+    enPared = true;
     existError = false;
         
     posActualOld = posActual;
@@ -78,6 +90,17 @@ for i=ptsADescartar:nLI-ptsADescartar
     if not(existError)
         distance = sqrt((posActualOld(1) - xLI(i))^2 + (posActualOld(2) - yLI(i))^2 );
         list_profiles{end+1} = profile_expression;
+        
+%         %Debug
+%         if length(profile_expression) < 40
+%             disp('mistake at x y');
+%             disp(xLI(i)); disp(yLI(i));
+%             disp('length');
+%             disp(length(profile_expression));
+%         end
+        
+        
+        %disp(length(profile_expression));
     else
         distance = -1;
     end

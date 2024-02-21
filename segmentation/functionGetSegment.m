@@ -9,6 +9,8 @@ interfacePolarPosterior = functionInterfaceToImg( interface_below , hRegion, wRe
 maskPosterior = functionLabelizarPixelPolar( interfacePolarPosterior );
 paredMaskArtery = xor(maskAnterior,maskPosterior);
 
+paredMaskArtery=imdilate(paredMaskArtery, ones(3,3));
+
 validoArteria = round(xValids(1)):1:round(xValids(2));
 
 [meanPx, stdPx, imtPxMedia1, imtPxStd1, medicionesIMTmm1, imtPxMedian1,...
@@ -16,6 +18,8 @@ imtPxMedia2, imtPxStd2, medicionesIMTmm2, imtPxMedian2] =...
     functionThickness( interface_above(:,1),interface_above(:,2),interface_below(:,1),...
     interface_below(:,2),validoArteria,paredMaskArtery, 1 );
 
+%debug
+%figure, imshow(paredMaskArtery);
 
 strStatistics = {strcat('Distance px Mean: ',num2str(meanPx)),...
     strcat('Distance px Std: ',num2str(stdPx)),...

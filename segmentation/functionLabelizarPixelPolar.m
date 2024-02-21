@@ -8,7 +8,8 @@ function mask = functionLabelizarPixelPolar( interfacePolar )
 mask = false(m,n);
 for i = 1:1:n
     r = find(interfacePolar(:,i));
-    mask(1:r,i) = 1;
+    %mask(1:r,i) = 1;
+    mask(1:r,i) = 1; %all snakes points inside the mask. 2 px errors max
 end
 
 end
