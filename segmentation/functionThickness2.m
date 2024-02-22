@@ -2,6 +2,7 @@ function [imtPxMedia, imtPxMedian, imtPxStd, imtPxMin, imtPxMax, mediciones, imt
     imtMedian, imtStd, imtMin, imtMax, medicionesIMTmm] =...
     functionThickness2( xLI,yLI,xMA,yMA,paredMask, mmpx )
 
+flag_debug = false;
 [h,w]=size(paredMask);
 
 ptsADescartar = 50;
@@ -14,6 +15,11 @@ imtsPx = iLI;
 n = 11; %distancia para sacar linea recta
 medicionesIMT = zeros(1,length(xLI)-2*ptsADescartar);
 stepNormal = 0.1;
+
+if flag_debug
+    hFig_debug = figure('Name','Debug');
+    imshow(paredMask);
+end
 
 for i=ptsADescartar:nLI-ptsADescartar
     posActual = [xLI(i),yLI(i)];
@@ -50,6 +56,13 @@ for i=ptsADescartar:nLI-ptsADescartar
     end
     if not(existError)
         distance = sqrt((posActualOld(1) - xLI(i))^2 + (posActualOld(2) - yLI(i))^2 );
+        if flag_debug
+                figure(hFig_debug);
+                hold on; line([xLI(i), posActualOld(1)],[yLI(i) posActualOld(2)]);
+                %hold on; line([yLI(i) posActualOld(2)],[xLI(i), posActualOld(1)]);
+                hold off;
+            end
+        
     else
         distance = -1;
     end

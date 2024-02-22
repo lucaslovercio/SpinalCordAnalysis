@@ -1,7 +1,7 @@
 function [xInicDiameter,xFinDiameter] = functionPickSegment(z_projection_optical, interface_anterior, interface_posterior)
 
 h1 = figure();
-imshow(functionLinearNorm(z_projection_optical));
+figure(h1); imshow(functionLinearNorm(z_projection_optical));
 hold on; plot(interface_anterior(:,1),interface_anterior(:,2),'g');
 plot(interface_posterior(:,1),interface_posterior(:,2),'r');  hold off;
 
@@ -12,6 +12,7 @@ yPosterior = interface_posterior(:,2);
 
 while rehacer
     
+    figure(h1);
     title('Select start and end of segment of interest');
     [xInicDiameter, yInicDiameter]= ginput(1);
     a = yAnterior(round(xInicDiameter));
