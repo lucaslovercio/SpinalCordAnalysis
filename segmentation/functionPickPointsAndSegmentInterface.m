@@ -2,7 +2,7 @@ function interface_result = functionPickPointsAndSegmentInterface(z_projection_o
 
 z_projection_optical_inverted = ones(size(z_projection_optical_filtered)) - functionLinearNorm(z_projection_optical_filtered);
 
-hFig1 = figure('Name','Segment Anterior','units','normalized','outerposition',[0 0 1 1]);
+hFig1 = figure('Name','Segment Anterior');
 imshow(functionLinearNorm(z_projection_optical));
 
 title('Select point of the top edge using Left-click, from left to right, and Press Enter');

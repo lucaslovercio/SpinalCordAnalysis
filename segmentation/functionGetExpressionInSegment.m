@@ -2,7 +2,7 @@ function [imtPxMedia, imtPxMedian, imtPxStd, imtPxMin, imtPxMax, mediciones, imt
     imtMedian, imtStd, imtMin, imtMax, medicionesIMTmm, list_profiles] =...
     functionGetExpressionInSegment( xLI,yLI,xMA,yMA,xValid,paredMask, mmpx, slice_expression, meanPx )
 
-flag_debug = true;
+flag_debug = false;
 
 %Need to invert, as the original script is from LI to MA. Need to do MA to
 %LI
@@ -95,7 +95,7 @@ for i=ptsADescartar:nLI-ptsADescartar
     end
     if not(existError)
         distance = sqrt((posActualOld(1) - xLI(i))^2 + (posActualOld(2) - yLI(i))^2 );
-        if distance > meanPx * 0.5
+        if distance > meanPx * 0.5 %To reasure not having wrong profiles
             
             profile_expression = improfile(slice_expression,[xLI(i), posActualOld(1)],[yLI(i) posActualOld(2)]);
             list_profiles{end+1} = profile_expression;
