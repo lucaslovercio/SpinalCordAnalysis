@@ -1,5 +1,5 @@
-function [imtPxMedia, imtPxMedian, imtPxStd, imtPxMin, imtPxMax, mediciones, imtMedia,...
-    imtMedian, imtStd, imtMin, imtMax, medicionesIMTmm] =...
+function [imtPxMedia, imtPxMedian, imtPxStd, imtPxMin, imtPxMax, mediciones, imtMediaReal,...
+    imtMedianReal, imtStdReal, imtMinReal, imtMaxReal, medicionesIMTmm] =...
     functionThickness2( xLI,yLI,xMA,yMA,paredMask, mmpx )
 
 flag_debug = false;
@@ -83,10 +83,10 @@ imtPxMin = min(medicionesIMT);
 imtPxMax = max(medicionesIMT);
 mediciones = length(medicionesIMT);
 
-imtMedia = mean(medicionesIMTmm);
-imtMedian = median(medicionesIMTmm);
-imtStd = std(medicionesIMTmm);
-imtMin = min(medicionesIMTmm);
-imtMax = max(medicionesIMTmm);
+imtMediaReal = mean(medicionesIMTmm);
+imtMedianReal = median(medicionesIMTmm);
+imtStdReal = std(medicionesIMTmm);
+imtMinReal = min(medicionesIMTmm);
+imtMaxReal = max(medicionesIMTmm);
 
 end

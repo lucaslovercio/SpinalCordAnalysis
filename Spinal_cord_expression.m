@@ -11,13 +11,10 @@ n_segments_step = 5;
 n_segments_end = 15;
 
 % Pixel size
-pixel_size = 1;
+pixel_size = 0.6;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 currentFolder = pwd;
 inicFolder = currentFolder;
@@ -27,7 +24,6 @@ close all; clc;
 
 addpath('profileFeatures');
 addpath('segmentation');
-
 
 %Open TIFF file
 [filename,PathName] = uigetfile({'*','All Image Files'},'Open Image',inicFolder);
@@ -51,22 +47,26 @@ close all;
 
 %To obtain the width of the spinal cord section
 [xInicDiameter,xFinDiameter] = functionPickSegment(z_projection_optical, interface_anterior, interface_posterior);
-[paredMaskExpression, strStatisticsGeometry, meanPx] = functionGetSegment(z_projection_optical, interface_posterior, interface_anterior, [xInicDiameter,xFinDiameter]);
+[paredMaskExpression, strStatisticsGeometry, meanPx, meanReal] =...
+    functionGetSegment(z_projection_optical, interface_posterior, interface_anterior,...
+    [xInicDiameter,xFinDiameter], pixel_size);
 %disp(strStatisticsGeometry);
 
 [list_all_profiles] = functionGetAllProfiles(n_segments_inic,n_segments_step,n_segments_end,...
-    volume_expression, interface_anterior, interface_posterior, meanPx);
+    volume_expression, interface_anterior, interface_posterior, meanPx, pixel_size);
 
 %Feature extraction
-[list_max,list_negative_first_gradient,list_negative_first_gradient_pos, list_length_profile] =...
-    functionFeatureProfiles(list_all_profiles);
+[list_max,list_negative_first_gradient,...
+    list_negative_first_gradient_pos, list_negative_first_gradient_pos_real,list_length_profile,list_length_real] =...
+    functionFeatureProfiles(list_all_profiles, pixel_size);
 
 %Build string
 [strStatisticsExpression, matrixCSV, headersCSV] =...
-    functionStatsProfiles(list_max,list_negative_first_gradient,list_negative_first_gradient_pos,list_length_profile);
+    functionStatsProfiles(list_max,list_negative_first_gradient,...
+    list_negative_first_gradient_pos,list_negative_first_gradient_pos_real,list_length_profile,list_length_real);
 
 %Plot profiles
-functionPlotProfiles(list_all_profiles, filename, list_length_profile);
+functionPlotProfiles(list_all_profiles, filename, list_length_profile, pixel_size);
 
 %Save text file
 fileID = fopen(strcat(filename,'_stats.txt'),'w');
