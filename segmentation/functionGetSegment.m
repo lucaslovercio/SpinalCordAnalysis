@@ -1,4 +1,4 @@
-function [paredMaskArtery, withLineBreak] = functionGetSegment(z_projection_optical, interface_above, interface_below, xValids)
+function [paredMaskArtery, withLineBreak, meanPx] = functionGetSegment(z_projection_optical, interface_above, interface_below, xValids)
 
 [hRegion,wRegion] = size(z_projection_optical);
 
@@ -9,7 +9,7 @@ interfacePolarPosterior = functionInterfaceToImg( interface_below , hRegion, wRe
 maskPosterior = functionLabelizarPixelPolar( interfacePolarPosterior );
 paredMaskArtery = xor(maskAnterior,maskPosterior);
 
-paredMaskArtery=imdilate(paredMaskArtery, ones(3,3));
+paredMaskArtery=imdilate(paredMaskArtery, ones(2,2));
 
 validoArteria = round(xValids(1)):1:round(xValids(2));
 
