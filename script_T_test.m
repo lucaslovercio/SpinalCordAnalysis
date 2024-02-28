@@ -3,6 +3,12 @@ clear all; close all; clc;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-----------------------------NO PARAMETERS-------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 currentFolder = pwd;
 inicFolder = currentFolder;
@@ -10,11 +16,8 @@ segmentarStudies = true;
 
 close all; clc;
 
-addpath('profileFeatures');
-addpath('segmentation');
-
 %Open TIFF file
-[filename,PathName] = uigetfile({'*','All Image Files'},'Open CSV',inicFolder);
+[filename,PathName] = uigetfile({'*','All Files'},'Open CSV',inicFolder);
 dirCSV= strcat(PathName,filename);
 
 T = readtable(dirCSV);
@@ -32,14 +35,17 @@ x_limit_upper = max([max(sample_1),max(sample_2)]);
 
 [h,p] = ttest2(sample_1,sample_2)
 
-figure('Name','Histograms');
-histogram(sample_1,15,'facealpha',.5,'edgecolor','none')
-column_name = strrep(column_names{1},'_',' ');
-title(column_name);
+hFigHist = figure('Name','Histograms');
+hhist1 = histogram(sample_1,15,'facealpha',.5,'edgecolor','none');
+title_plot = strrep(filename,'_',' ');
+title_plot = strrep(title_plot,'.csv','');
+title(title_plot);
 hold on
-histogram(sample_2,15,'facealpha',.5,'edgecolor','none')
+hhist2 = histogram(sample_2,15,'facealpha',.5,'edgecolor','none');
 hold off;
-xlabel(column_name);
+xlabel(title_plot);
 ylabel('Frequency');
 axis([x_limit_lower x_limit_upper 0 100]);
+legend([hhist1 hhist2],{strrep(column_names{1},'_',' '),strrep(column_names{2},'_',' ')})
 
+saveas(hFigHist,strcat(PathName,filename,'_histograms.png'));

@@ -66,10 +66,10 @@ close all;
     list_negative_first_gradient_pos,list_negative_first_gradient_pos_real,list_length_profile,list_length_real);
 
 %Plot profiles
-functionPlotProfiles(list_all_profiles, filename, list_length_profile, pixel_size);
+functionPlotProfiles(list_all_profiles, strcat(PathName,filename), list_length_profile, pixel_size);
 
 %Save text file
-fileID = fopen(strcat(filename,'_stats.txt'),'w');
+fileID = fopen(strcat(PathName,filename,'_stats.txt'),'w');
 fprintf(fileID,strStatisticsGeometry);
 fprintf(fileID,strStatisticsExpression);
 fclose(fileID);
@@ -78,6 +78,6 @@ fclose(fileID);
 %fileID = fopen(strcat(filename,'_features.csv'),'w');
 T = array2table(matrixCSV);
 T.Properties.VariableNames(1:length(headersCSV)) = headersCSV;
-writetable(T,strcat(filename,'_features.csv'))
+writetable(T,strcat(PathName,filename,'_features.csv'))
 
 
