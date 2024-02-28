@@ -17,3 +17,5 @@
 Lucas D. Lo Vercio et al. (lucasdaniel.lovercio@ucalgary.ca)
 
 Cumming School of Medicine, University of Calgary (Calgary, AB, Canada)
+
+This tool is based on Cimtool (Manterola, H, et al. "Validation of an open-source tool for measuring carotid lumen diameter and intima–media thickness." Ultrasound Med Biol 44.8 (2018).): https://www.sciencedirect.com/science/article/pii/S0301562918301418
