@@ -40,8 +40,12 @@ z_projection_optical = functionZProject(volume_optical);
 z_projection_optical_filtered = medfilt2(z_projection_optical,[3 3],'symmetric');
 
 %Bottom and upper interfaces
-interface_anterior = functionPickPointsAndSegmentInterface(z_projection_optical, z_projection_optical_filtered);
-interface_posterior = functionPickPointsAndSegmentInterface(z_projection_optical, z_projection_optical_filtered);
+title_window = 'Select point of the bottom edge using Left-click, from left to right, and Press Enter';
+interface_anterior = functionPickPointsAndSegmentInterface(z_projection_optical, z_projection_optical_filtered,...
+    title_window);
+title_window = 'Select point of the top edge using Left-click, from left to right, and Press Enter';
+interface_posterior = functionPickPointsAndSegmentInterface(z_projection_optical, z_projection_optical_filtered,...
+    title_window);
 
 close all;
 
