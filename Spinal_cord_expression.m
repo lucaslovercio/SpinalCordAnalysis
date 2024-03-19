@@ -59,13 +59,17 @@ close all;
 [list_all_profiles] = functionGetAllProfiles(n_segments_inic,n_segments_step,n_segments_end,...
     volume_expression, interface_anterior, interface_posterior, meanPx, pixel_size);
 
+%Build mean profile
+
+[mean_profile, std_profile, elem_profile, headersCSV_mean] = functionGetMeanProfile(list_all_profiles);
+
 %Feature extraction
 [list_max,list_negative_first_gradient,...
     list_negative_first_gradient_pos, list_negative_first_gradient_pos_real,list_length_profile,list_length_real] =...
     functionFeatureProfiles(list_all_profiles, pixel_size);
 
 %Build string
-[strStatisticsExpression, matrixCSV, headersCSV] =...
+[strStatisticsExpression, matrixCSV, headersCSV_features] =...
     functionStatsProfiles(list_max,list_negative_first_gradient,...
     list_negative_first_gradient_pos,list_negative_first_gradient_pos_real,list_length_profile,list_length_real);
 
@@ -81,7 +85,10 @@ fclose(fileID);
 %Save features to csv file
 %fileID = fopen(strcat(filename,'_features.csv'),'w');
 T = array2table(matrixCSV);
-T.Properties.VariableNames(1:length(headersCSV)) = headersCSV;
-writetable(T,strcat(PathName,filename,'_features.csv'))
+T.Properties.VariableNames(1:length(headersCSV_features)) = headersCSV_features;
+writetable(T,strcat(PathName,filename,'_features.csv'));
 
-
+%Save mean profile
+T = array2table([mean_profile', std_profile', elem_profile']);
+T.Properties.VariableNames(1:length(headersCSV_mean)) = headersCSV_mean;
+writetable(T,strcat(PathName,filename,'_mean_profile.csv'));
